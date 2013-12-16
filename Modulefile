@@ -1,11 +1,8 @@
 name    'cegeka-logrotate'
 version '0.0.1'
-source 'UNKNOWN'
+source 'https://github.com/rodjek/puppet-logrotate'
 author 'cegeka'
 license 'UNKNOWN'
-summary 'UNKNOWN'
-description 'UNKNOWN'
-project_page 'UNKNOWN'
-
-## Add dependencies, if any:
-# dependency 'username/name', '>= 1.2.0'
+summary 'Logrotate module'
+description 'Manage logrotate on your servers with Puppet'
+project_page 'https://github.com/cegeka/puppet-logrotate'
