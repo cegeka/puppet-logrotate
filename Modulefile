@@ -1,8 +1,0 @@
-name    'cegeka-logrotate'
-version '0.0.1'
-source 'https://github.com/rodjek/puppet-logrotate'
-author 'cegeka'
-license 'UNKNOWN'
-summary 'Logrotate module'
-description 'Manage logrotate on your servers with Puppet'
-project_page 'https://github.com/cegeka/puppet-logrotate'
