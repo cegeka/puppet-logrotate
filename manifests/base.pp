@@ -4,8 +4,19 @@
 #
 #   include logrotate::base
 class logrotate::base {
+
   package { 'logrotate':
     ensure => present,
+  }
+
+  case $::operatingsystemmajrelease {
+    '^7': {
+      package {'deltarpm':
+        ensure => present,
+        before => Package['logrotate'],
+      }
+    }
+    default: { }
   }
 
   File {
@@ -16,16 +27,16 @@ class logrotate::base {
 
   file {
     '/etc/logrotate.conf':
-      ensure  => file,
-      mode    => '0444',
-      source  => 'puppet:///modules/logrotate/etc/logrotate.conf';
+      ensure => file,
+      mode   => '0444',
+      source => 'puppet:///modules/logrotate/etc/logrotate.conf';
     '/etc/logrotate.d':
-      ensure  => directory,
-      mode    => '0755';
+      ensure => directory,
+      mode   => '0755';
     '/etc/cron.daily/logrotate':
-      ensure  => file,
-      mode    => '0555',
-      source  => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
+      ensure => file,
+      mode   => '0555',
+      source => 'puppet:///modules/logrotate/etc/cron.daily/logrotate';
   }
 
   case $::osfamily {
