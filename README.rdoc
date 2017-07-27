@@ -1,5 +1,5 @@
 = puppet-logrotate module
 
-{<img src='https://codex.cegeka.be/jenkins/job/puppet-logrotate/badge/icon' />}[https://codex.cegeka.be/jenkins/job/puppet-logrotate/]
+{<img src='https://jenkins-iac.cegeka.be/job/puppet-logrotate/badge/icon' />}[https://jenkins-iac.cegeka.be/job/puppet-logrotate/]
 
 This is the logrotate module.
