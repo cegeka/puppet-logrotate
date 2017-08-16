@@ -41,7 +41,7 @@
   [
     'compresscmd', 'compressext', 'compressoptions', 'dateformat', 'extension',
     'maxage', 'minsize', 'rotate', 'size', 'shredcycles', 'start',
-    'uncompresscmd'
+    'uncompresscmd', 'maxsize'
   ].each do |key|
     value = scope.to_hash[key]
     opts << "#{key} #{value}" if value != 'undef'
