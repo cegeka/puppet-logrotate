@@ -50,6 +50,11 @@
 #                   but not before the scheduled rotation time (optional).
 #                   The default units are bytes, append k, M or G for kilobytes,
 #                   megabytes and gigabytes respectively.
+# maxsize         - Log files are rotated when they grow bigger than size bytes even 
+#                   before the additionally specified time interval (daily, weekly, monthly, or yearly).
+#                   The related size option is similar except that it is mutually exclusive with the 
+#                   time interval options, and it causes log files to be rotated  without  regard for  the  last
+#                   rotation time.  When maxsize is used, both the size and timestamp of a log file are considered.
 # missingok       - A Boolean specifying whether logrotate should ignore missing
 #                   log files or issue an error (optional).
 # olddir          - A String path to a directory that rotated logs should be
@@ -138,6 +143,7 @@ define logrotate::rule(
                         $maillast        = 'undef',
                         $maxage          = 'undef',
                         $minsize         = 'undef',
+                        $maxsize         = 'undef',
                         $missingok       = 'undef',
                         $olddir          = 'undef',
                         $postrotate      = 'undef',
@@ -290,6 +296,7 @@ define logrotate::rule(
     'month': { $_rotate_every = 'monthly' }
     'year': { $_rotate_every = 'yearly' }
     'daily', 'weekly','monthly','yearly': { $_rotate_every = $rotate_every }
+    /minutes/: { $_rotate_every = 'daily' }
     default: {
       fail("Logrotate::Rule[${name}]: invalid rotate_every value")
     }
@@ -308,6 +315,13 @@ define logrotate::rule(
     /^\d+[kMG]?$/: {}
     default: {
       fail("Logrotate::Rule[${name}]: minsize must match /\\d+[kMG]?/")
+    }
+  }
+  case $maxsize {
+    'undef': {}
+    /^\d+[kMG]?$/: {}
+    default: {
+      fail("Logrotate::Rule[${name}]: maxsize must match /\\d+[kMG]?/")
     }
   }
 
@@ -417,5 +431,15 @@ define logrotate::rule(
     mode    => '0444',
     content => template('logrotate/etc/logrotate.d/rule.erb'),
     require => Class['logrotate::base'],
+  }
+  if $rotate_every =~ /minutes$/ {
+    $arr_rotate_every = split($rotate_every, ' ')
+    $_rotate_every_minutes= $arr_rotate_every[0]
+
+    cron {  $name:
+      command => "/usr/sbin/logrotate $rule_path",
+      user    => 'root',
+      minute  =>  "*/${_rotate_every_minutes}"
+    }
   }
 }
