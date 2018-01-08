@@ -137,3 +137,4 @@ logrotate::rule { 'apache':
   postrotate    => '/etc/init.d/httpd restart',
 }
 ```
+
